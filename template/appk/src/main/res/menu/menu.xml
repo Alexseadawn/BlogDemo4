@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/one"
+        android:title="one"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/two"
+        android:title="two"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/three"
+        android:title="three"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/four"
+        android:title="four"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/five"
+        android:title="five"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/six"
+        android:title="six"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/seven"
+        android:title="seven"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/eight"
+        android:title="eight"
+        app:showAsAction="never"/>
+</menu>
