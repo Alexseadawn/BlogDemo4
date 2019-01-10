@@ -7,17 +7,32 @@
     android:orientation="vertical"
     tools:context=".module.refrence.JavaActivity">
 
-    <TextView
-        android:id="@+id/tvText"
-        android:text="你好，世界"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:gravity="center"
-        android:textSize="28sp"
-        />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tvText"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="center"
+                android:text="你好，世界"
+                android:textSize="28sp" />
+
+            <EditText
+                android:id="@+id/edText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>
