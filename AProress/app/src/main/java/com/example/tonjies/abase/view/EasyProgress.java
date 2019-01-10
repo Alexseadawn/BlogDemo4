@@ -4,11 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.tonjies.abase.app.App;
 import com.example.tonjies.abase.util.ADensity;
@@ -32,10 +32,10 @@ public class EasyProgress extends View {
     //圆点指示器的半径
     private int mCircleRadius = ADensity.dip2px(12);
 
-    //进度条的最大进度值
+    //进度条的最大宽度
     private int maxProgress;
 
-    //进度条当前的进度值
+    //进度条当前的宽度
     private int currentProgress;
 
     //当前View的宽度
@@ -45,10 +45,10 @@ public class EasyProgress extends View {
     private int height;
 
     //距离左边的内边距
-    private int paddLeft;
+    private int paddingLeft;
 
     //距离右边的内边距
-    private int paddRight;
+    private int paddingRight;
 
 
     public EasyProgress(Context context) {
@@ -73,7 +73,7 @@ public class EasyProgress extends View {
         bgPaint.setColor(Color.parseColor("#F0F0F0"));//灰色
         bgPaint.setStyle(Paint.Style.FILL_AND_STROKE);//填充且描边
         bgPaint.setAntiAlias(true);//抗锯齿
-        bgPaint.setStrokeCap(Paint.Cap.ROUND);//线冒的头是原的
+        bgPaint.setStrokeCap(Paint.Cap.ROUND);//线冒的头是圆的
         bgPaint.setStrokeWidth(ADensity.dip2px(3));//大小为3dp转px
 
         //设置进度画笔
@@ -81,7 +81,7 @@ public class EasyProgress extends View {
         progressPaint.setColor(Color.parseColor("#0DE6C2"));//绿色
         progressPaint.setStyle(Paint.Style.FILL_AND_STROKE);//填充且描边
         progressPaint.setAntiAlias(true);//抗锯齿
-        progressPaint.setStrokeCap(Paint.Cap.ROUND);//线冒的头是原的
+        progressPaint.setStrokeCap(Paint.Cap.ROUND);//线冒的头圆原的
         progressPaint.setStrokeWidth(ADensity.dip2px(3));//大小为3dp转px
 
         //圆点指示器
@@ -92,6 +92,33 @@ public class EasyProgress extends View {
         circlePaint.setStyle(Paint.Style.FILL);//填充
     }
 
+    //重新计算控件的宽，高
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = measureHeight(heightMeasureSpec);
+        setMeasuredDimension(width, height);
+    }
+
+    //返回高度值
+    private int measureHeight(int heightMeasureSpec) {
+        int result;
+        int mode = MeasureSpec.getMode(heightMeasureSpec);//获取高度类型
+        int size = MeasureSpec.getSize(heightMeasureSpec);//获取高度数值
+        //如果用户设定了指定大小
+        if (mode == MeasureSpec.EXACTLY) {
+            L.d("EXACTLY");
+            result = size;
+        }
+        //如果用户没有设定明确的值
+        else {
+            //设定高度为圆点指示器的直径
+            result = mCircleRadius * 2;
+        }
+        return result;
+    }
+
     //初始化几个距离参数
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -100,29 +127,32 @@ public class EasyProgress extends View {
         height = getHeight();//view的高度
 
         //让左边距至少为半个圆点指示器的距离
-        paddLeft = getPaddingLeft();//距离左边的距离
+        paddingLeft = getPaddingLeft();//距离左边的距离
         if (getPaddingLeft() < mCircleRadius) {
-            paddLeft = mCircleRadius;
+            L.d("onLayout");
+            paddingLeft = mCircleRadius;
         }
-        ;
-
         //让右边距至少为半个圆点指示器的距离
-        paddRight = getPaddingRight();//距离右边的距离
+        paddingRight = getPaddingRight();//距离右边的距离
         if (getPaddingRight() < mCircleRadius) {
-            paddRight = mCircleRadius;
+            paddingRight = mCircleRadius;
         }
+
+        //如果当前进度小于左边距
+        setCurrentProgress();
         //最大进度长度等于View的宽度-(左边的内边距+右边的内边距)
-        maxProgress = width - getPaddingLeft() - getPaddingRight();
+        maxProgress = width - paddingLeft - paddingRight;
     }
 
     //绘制控件
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+//        L.d("onDraw");
         //绘制背景线段
-        canvas.drawLine(paddLeft, height / 2, width - paddRight, height / 2, bgPaint);
+        canvas.drawLine(paddingLeft, height / 2, width - paddingRight, height / 2, bgPaint);
         //绘制实际进度线段
-        canvas.drawLine(paddLeft, height / 2, currentProgress, height / 2, progressPaint);
+        canvas.drawLine(paddingLeft, height / 2, currentProgress, height / 2, progressPaint);
         //要支持阴影下过必须关闭硬件加速
         setLayerType(LAYER_TYPE_SOFTWARE, null);//发光效果不支持硬件加速
         //绘制圆点
@@ -136,33 +166,50 @@ public class EasyProgress extends View {
             //按住
             case MotionEvent.ACTION_DOWN:
                 //设置进度值
-                setProgress(event);
+                setMotionProgress(event);
                 return true;
             //移动
             case MotionEvent.ACTION_MOVE:
                 //获取当前触摸点，赋值给当前进度
-                setProgress(event);
+                setMotionProgress(event);
                 return true;
         }
         return super.onTouchEvent(event);
     }
 
     //设置进度值
-    private void setProgress(MotionEvent event) {
+    private void setMotionProgress(MotionEvent event) {
         //获取当前触摸点，赋值给当前进度
         currentProgress = (int) event.getX();
         //如果当前进度小于左边距
-        if (currentProgress < paddLeft) {
-            currentProgress = paddLeft;
-        }
-        //如果当前进度大于宽度-右边距
-        else if (currentProgress > width - paddRight) {
-            currentProgress = width - paddRight;
-        }
+        setCurrentProgress();
         //看数学公式就可以了,实际百分比进度数值
-        int result = ((currentProgress - paddLeft) * 100) / maxProgress;
+        int result = ((currentProgress - paddingLeft) * 100) / maxProgress;
         onProgressListener.onSelect(result);
         invalidate();
+    }
+
+
+    //设置当前进度条进度,从1到100
+    public void setProgress(int progress) {
+        if (progress > 100 || progress < 0) {
+            Toast.makeText(App.getContext(), "输入的进度值不符合规范", Toast.LENGTH_SHORT).show();
+        }
+        setCurrentProgress();
+        //设置当前进度的宽度
+        currentProgress = ((progress * maxProgress) / 100) + paddingLeft;
+        onProgressListener.onSelect(progress);
+        invalidate();
+    }
+
+    private void setCurrentProgress() {
+        if (currentProgress < paddingLeft) {
+            currentProgress = paddingLeft;
+        }
+        //如果当前进度大于宽度-右边距
+        else if (currentProgress > width - paddingRight) {
+            currentProgress = width - paddingRight;
+        }
     }
 
     //当前选中进度的回调

@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".module.easy.EasyActivity">
 
-
-    <com.example.tonjies.abase.view.EasyProgress
-        android:id="@+id/easyProgress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <!--当前进度条的百分比进度值-->
     <TextView
         android:id="@+id/tvCurrentProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_gravity="right|top"
         android:layout_marginRight="19dp"
         android:layout_marginTop="19dp"
-        android:text="30/100"
+        android:text="0/100"
         android:textColor="@color/colorPrimary"
-        android:textSize="30sp"
-        android:visibility="gone" />
+        android:textSize="30sp" />
 
-</RelativeLayout>
+
+    <com.example.tonjies.abase.view.EasyProgress
+        android:id="@+id/easyProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp" />
+
+    <!--点击增加进度的按钮-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/faButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="29dp"
+        android:layout_marginRight="29dp"
+        android:elevation="8dp"
+        android:src="@drawable/add"
+        app:backgroundTint="#0DE6C2" />
+
+</LinearLayout>
