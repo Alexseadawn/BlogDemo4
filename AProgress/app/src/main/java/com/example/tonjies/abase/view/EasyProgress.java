@@ -14,6 +14,9 @@ import com.example.tonjies.abase.app.App;
 import com.example.tonjies.abase.util.ADensity;
 import com.example.tonjies.abase.util.L;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by 舍长 on 2019/1/10
  * describe:一个简单的进度条
@@ -33,10 +36,10 @@ public class EasyProgress extends View {
     private int mCircleRadius = ADensity.dip2px(12);
 
     //进度条的最大宽度
-    private int maxProgress;
+    private float maxProgress;
 
     //进度条当前的宽度
-    private int currentProgress;
+    private float currentProgress;
 
     //当前View的宽度
     private int width;
@@ -49,6 +52,36 @@ public class EasyProgress extends View {
 
     //距离右边的内边距
     private int paddingRight;
+
+    //文本画笔
+    private Paint mTextPaint;
+
+    //文本的大小
+    private float mTextSize = ADensity.dip2px(14);
+
+    /**
+     * 评价文字集合,如体验很好，体验一般，体验不错，体验很好4个等级
+     * 之所以使用集合，不使用String数组是想让它保持可扩展性，我们后面课题提供一个接口，让用户自己决定要设置多少个评价等级
+     */
+    private List<String> evaluates = new ArrayList<>();
+
+    //文本的宽度
+    private int textWidth;
+
+    //文本的高度
+    private int textHeight;
+
+    //文本的透明度
+    private int textAlpha;
+
+    //文本缩放后的最小的大小
+    private float textSizeRadio = 0.8f;
+
+    //一段区间的大小
+    private float distance;
+
+    //一半区间的大小
+    private float half = distance / 2;
 
 
     public EasyProgress(Context context) {
@@ -90,6 +123,9 @@ public class EasyProgress extends View {
         circlePaint.setColor(Color.parseColor("#fafafa"));//颜色
         circlePaint.setShadowLayer(ADensity.dip2px(2), 0, 0, Color.parseColor("#38000000"));//外阴影颜色
         circlePaint.setStyle(Paint.Style.FILL);//填充
+
+        //初始化文本画笔
+        mTextPaint=new Paint();
     }
 
     //重新计算控件的宽，高
@@ -97,24 +133,35 @@ public class EasyProgress extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = measureHeight(heightMeasureSpec);
+        int minHeight = mCircleRadius * 2 + (ADensity.dip2px(2) * 2);
+        int height = resolveSize(minHeight, heightMeasureSpec);
         setMeasuredDimension(width, height);
     }
 
-    //返回高度值
+    //返回高度值,作用和resolveSize方法一样
     private int measureHeight(int heightMeasureSpec) {
         int result;
         int mode = MeasureSpec.getMode(heightMeasureSpec);//获取高度类型
         int size = MeasureSpec.getSize(heightMeasureSpec);//获取高度数值
+        //制定的最小高度标准
+        int minHeight = mCircleRadius * 2 + (ADensity.dip2px(2) * 2);
         //如果用户设定了指定大小
         if (mode == MeasureSpec.EXACTLY) {
+            /**
+             * 虽然用户已经指定了大小，但是万一指定的大小小于圆点指示器的高度，
+             * 还是会出现显示不全的情况，所以还要进行判断
+             */
             L.d("EXACTLY");
-            result = size;
+            if (size < minHeight) {
+                result = minHeight;
+            } else {
+                result = size;
+            }
         }
         //如果用户没有设定明确的值
         else {
             //设定高度为圆点指示器的直径
-            result = mCircleRadius * 2;
+            result = minHeight;
         }
         return result;
     }
@@ -138,6 +185,8 @@ public class EasyProgress extends View {
             paddingRight = mCircleRadius;
         }
 
+        //让左边距至少为
+
         //如果当前进度小于左边距
         setCurrentProgress();
         //最大进度长度等于View的宽度-(左边的内边距+右边的内边距)
@@ -150,8 +199,11 @@ public class EasyProgress extends View {
         super.onDraw(canvas);
 //        L.d("onDraw");
         //绘制背景线段
+        L.d("paddLeft:" + paddingLeft + " paddRight:" + paddingRight);
+        //从（左边距，View高度的一半）开始，到（View宽度-右边距，View高度的一半）还将绘制灰色背景线段
         canvas.drawLine(paddingLeft, height / 2, width - paddingRight, height / 2, bgPaint);
         //绘制实际进度线段
+        //从（左边距，View高度的一半）开始，到（现在的触摸到的进度宽度，View高度的一半）还将绘制灰色背景线段
         canvas.drawLine(paddingLeft, height / 2, currentProgress, height / 2, progressPaint);
         //要支持阴影下过必须关闭硬件加速
         setLayerType(LAYER_TYPE_SOFTWARE, null);//发光效果不支持硬件加速
@@ -184,8 +236,11 @@ public class EasyProgress extends View {
         //如果当前进度小于左边距
         setCurrentProgress();
         //看数学公式就可以了,实际百分比进度数值
-        int result = ((currentProgress - paddingLeft) * 100) / maxProgress;
-        onProgressListener.onSelect(result);
+        float result = ((currentProgress - paddingLeft) * 100) / maxProgress;
+        //进行空值判断
+        if (onProgressListener != null) {
+            onProgressListener.onSelect((int) result);
+        }
         invalidate();
     }
 

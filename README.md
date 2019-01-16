@@ -18,7 +18,7 @@
 
 #### **AProgress**
 
-地址
+[地址](https://www.jianshu.com/p/a0b6f171b872)
 
 > 自定义可拖拽进度条，继承于View类，完全自定义
 

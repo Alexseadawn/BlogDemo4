@@ -6,7 +6,7 @@ import com.example.tonjies.abase.app.App;
 
 /**
  * Created by 舍长 on 2019/1/10
- * describe:
+ * describe:单位转换工具类
  */
 public class ADensity {
     /**

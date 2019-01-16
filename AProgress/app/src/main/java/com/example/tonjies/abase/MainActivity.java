@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import com.example.tonjies.abase.module.easy.EasyActivity;
 import com.example.tonjies.abase.module.example.ExampleActivity;
-import com.example.tonjies.abase.module.simple.SimpleActivity;
+import com.example.tonjies.abase.module.tprogress.TProgressActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             //下方带文本的进度条示例
             case R.id.btn_02:
-                startActivity(new Intent(this, SimpleActivity.class));
+                startActivity(new Intent(this, TProgressActivity.class));
                 break;
             //完整的案例
             case R.id.btn_03:

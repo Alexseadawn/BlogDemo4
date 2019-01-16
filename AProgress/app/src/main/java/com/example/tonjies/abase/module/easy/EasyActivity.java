@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
  */
 public class EasyActivity extends AppCompatActivity {
 
-    //实
+    //进度条
     @BindView(R.id.easyProgress)
     EasyProgress easyProgress;
 

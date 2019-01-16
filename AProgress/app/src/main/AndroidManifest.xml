@@ -13,24 +13,27 @@
         <activity android:name=".MainActivity" />
 
         <!-- 参考Activity -->
-        <activity android:name=".module.refrence.ReferenceActivity">
+        <activity android:name=".module.refrence.ReferenceActivity"></activity>
+
+        <!-- 带文字进度条示例 -->
+        <activity android:name=".module.tprogress.TProgressActivity">
 
         </activity>
 
-        <!--带文字进度条示例-->
-        <activity android:name=".module.simple.SimpleActivity" />
+        <!-- 简单进度条示例 -->
+        <activity android:name=".module.easy.EasyActivity"></activity>
 
-        <!--简单进度条示例-->
-        <activity android:name=".module.easy.EasyActivity" >
+        <!-- 完整diamante -->
+        <activity android:name=".module.example.ExampleActivity"></activity>
+
+        <!--带文字的进度条-->
+        <activity android:name=".module.aeasy.AeasyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!--完整diamante-->
-        <activity android:name=".module.example.ExampleActivity"></activity>
     </application>
 
 </manifest>
