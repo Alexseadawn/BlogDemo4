@@ -35,21 +35,27 @@ class RefrenceActivity : AppCompatActivity() {
             R.id.two -> {
                 toast("two")
             }
+            //
             R.id.three -> {
                 toast("three")
             }
+            //
             R.id.four -> {
                 toast("four")
             }
+            //
             R.id.five -> {
                 toast("five")
             }
+            //
             R.id.six -> {
                 toast("six")
             }
+            //
             R.id.seven -> {
                 toast("seven")
             }
+            //
             R.id.eight -> {
                 toast("eight")
             }

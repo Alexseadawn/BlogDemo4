@@ -9,10 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.common.app.BaseApp;
 import com.example.common.util.AGlide;
-import com.example.common.util.E;
 import com.example.common.util.FontSetting;
 import com.example.common.util.L;
 import com.example.common.util.AHelpter;
