@@ -11,5 +11,6 @@ public class App extends BaseApp{
     public void onCreate() {
         super.onCreate();
         //在这里进行第三方的初始化
+        AppConfig.getInstance().init();
     }
 }

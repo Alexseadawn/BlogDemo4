@@ -1,7 +1,7 @@
-package com.example.tonjies.template.module.refrence.draft;
+package com.example.tonjies.template.net.bean;
 
 /**
- * Created by 舍长 on 2018/12/14
+ * Created by 舍长 on 2019/1/20
  * describe:
  */
 public class Student {
