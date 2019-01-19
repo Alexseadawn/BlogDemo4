@@ -42,6 +42,7 @@ public class JavaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_java);
         ButterKnife.bind(this);
+        setTitle("tonjies的页面");
     }
 
 

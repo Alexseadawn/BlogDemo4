@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#FF24A8D9</color>
+    <!--沉稳的绿色-->
+    <!--<color name="colorPrimary">#008577</color>-->
+    <!--<color name="colorPrimaryDark">#00574B</color>-->
+    <!--<color name="colorAccent">#D81B60</color>-->
+
+    <!--青春的蓝色-->
+    <color name="colorAccent">#cc0094ff</color>
+    <color name="colorPrimary">#33aaff</color>
+    <color name="colorPrimaryDark">#2299ee</color>
+
+    <!--颜色选择文件-->
+    <color name="normal">#999999</color>
+    <color name="press">#000000</color>
 </resources>

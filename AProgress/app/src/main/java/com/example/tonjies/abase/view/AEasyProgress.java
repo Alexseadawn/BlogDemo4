@@ -258,16 +258,29 @@ public class AEasyProgress extends View {
         int progress = (int) (currentProgress - paddingLeft);
         for (int i = 0; i < evaluates.size(); i++) {
             if ((progress > ((i * distance) - half)) && (progress <= (half + (i * distance)))) {
-                //前半段
+                /**
+                 * 前半段
+                 * 从效果去考虑，文字区间的前半段我们应该做的，是让文字从不透明到透明
+                 * 让文字从小变大，所以我们需要一个从
+                 * 而前半段触摸到的进度，最大都不会超过 (i* distance)的
+                 * 不信将i等于1带入公式试一下，不能是0,因为0其实是文字区间的后半部分
+                 * 所以前半部分progress - (i * distance)是一个负数，且这个负数值的范围
+                 * 是在-half ~ 0 之间，随着进度的增加负数逐渐向0靠拢，
+                 * 那么我们就可以拿着这个数值的求负结果/half，就可以得出一个逐渐变大，
+                 * 但最大不会超过1的比例，但是我们
+                 */
                 if ((progress - (i * distance)) < 0) {
+                    //重新设置文本大小
+                    mTextSize = ADensity.dip2px(14);
                     L.d("前半段");
                     float radio = -(progress - (i * distance)) / half;
                     textAlpha = 1 - radio;
-                    mTextSize = ADensity.dip2px(14);
                     float size = (mTextSize - mTextSize * textSizeRadio) * (radio);
                     mTextSize = mTextSize - size;
-                    mTextPaint.setColor(AColor.changeAlpha(Color.parseColor("#9a9a9a"), (int) (textAlpha * 0xff)));
-                    canvas.drawText(evaluates.get(i), progress + paddingLeft, (float) (height / 2 + mCircleRadius * 2.8), mTextPaint);
+                    mTextPaint.setColor(AColor.changeAlpha(Color.parseColor("#9a9a9a"),
+                            (int) (textAlpha * 0xff)));
+                    canvas.drawText(evaluates.get(i), progress + paddingLeft,
+                            (float) (height / 2 + mCircleRadius * 2.8), mTextPaint);
                 }
                 //后半段
                 else {
@@ -284,7 +297,7 @@ public class AEasyProgress extends View {
             }
         }
 
-
+//        int progress = (int) (currentProgress - paddingLeft);
 //        if (progress < half) {
 //            canvas.drawText(evaluates.get(0), currentProgress, (float) (height / 2 + mCircleRadius * 2.8), mTextPaint);
 //        }

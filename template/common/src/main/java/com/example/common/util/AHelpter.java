@@ -7,7 +7,8 @@ import com.example.common.app.BaseApp;
 
 /**
  * Created by 舍长 on 2018/12/14
- * describe:吐司工具类
+ * describe:吐司工具类，实际的吐司工具类还有很大可能会自己封装样式，可以查看这篇教程
+ * https://blog.csdn.net/qq_40543575/article/details/83654311
  */
 public class AHelpter {
     /**

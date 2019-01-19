@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--实际运用该color文件的场景可以查看这篇文章-->
+    <!--https://www.jianshu.com/p/8b7186624ea5-->
+    <item android:color="@color/press" android:state_checked="true" />
+    <item android:color="@color/normal" />
+</selector>
